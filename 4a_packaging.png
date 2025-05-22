@@ -1,0 +1,14 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='emotion_detection_app',
+    version='1.0',
+    packages=find_packages(),
+    install_requires=[
+        'flask',
+        'ibm-watson'
+    ],
+    entry_points={
+        'console_scripts': ['run_app=app:main'],
+    },
+)
