@@ -1,9 +1,11 @@
+pip install ibm-watson
+
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, EmotionOptions
 
 # Set up authenticator with your IBM Cloud API key
-authenticator = IAMAuthenticator('your-api-key')
+authenticator = IAMAuthenticator('your-service-url')
 nlu = NaturalLanguageUnderstandingV1(
     version='2022-04-07',
     authenticator=authenticator
@@ -11,8 +13,11 @@ nlu = NaturalLanguageUnderstandingV1(
 nlu.set_service_url('your-service-url')  # e.g., https://api.us-south.natural-language-understanding.watson.cloud.ibm.com
 
 def detect_emotion(text):
-    response = nlu.analyze(
-        text=text,
-        features=Features(emotion=EmotionOptions())
-    ).get_result()
-    return response['emotion']['document']['emotion']
+    try:
+        response = nlu.analyze(
+            text=text,
+            features=Features(emotion=EmotionOptions())
+        ).get_result()
+        return response['emotion']['document']['emotion']
+    except Exception as e:
+        return {'error': str(e)}
