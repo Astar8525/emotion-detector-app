@@ -1,0 +1,21 @@
+python setup.py sdist bdist_wheel
+
+dist/
+├── emotion_detection_app-1.0.tar.gz
+├── emotion_detection_app-1.0-py3-none-any.whl
+
+pip install .
+
+entry_points={
+    'console_scripts': ['run_app=app:main'],
+}
+
+run_app
+
+pip show emotion_detection_app
+
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install .
+run_app
+
