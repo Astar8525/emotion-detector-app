@@ -1,0 +1,32 @@
+import unittest
+from app import format_emotions  # Assuming it's defined in app.py
+
+class TestFormatEmotions(unittest.TestCase):
+    def test_format_output(self):
+        emotions = {
+            "sadness": 0.15,
+            "joy": 0.65,
+            "fear": 0.05,
+            "disgust": 0.04,
+            "anger": 0.11
+        }
+        expected_output = (
+            "Sadness: 0.15\n"
+            "Joy: 0.65\n"
+            "Fear: 0.05\n"
+            "Disgust: 0.04\n"
+            "Anger: 0.11"
+        )
+        self.assertEqual(format_emotions(emotions), expected_output)
+
+if __name__ == "__main__":
+    unittest.main()
+
+def format_emotions(emotions):
+    if not isinstance(emotions, dict):
+        return "Invalid input: Expected a dictionary"
+    if not emotions:
+        return "No emotions detected."
+
+    formatted = "\n".join([f"{emotion.capitalize()}: {score:.2f}" for emotion, score in emotions.items()])
+    return formatted
