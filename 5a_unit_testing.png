@@ -1,0 +1,12 @@
+import unittest
+from app import detect_emotion
+
+class TestEmotionDetection(unittest.TestCase):
+    def test_emotion_response(self):
+        result = detect_emotion("I am very happy today!")
+        self.assertIn('joy', result)
+
+if __name__ == '__main__':
+    unittest.main()
+
+python -m unittest test_emotions.py
