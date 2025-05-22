@@ -1,0 +1,18 @@
+from flask import Flask, request, jsonify
+from emotion import detect_emotion
+
+app = Flask(__name__)
+
+@app.route('/emotion', methods=['POST'])
+def emotion():
+    text = request.json.get('text')
+    emotions = detect_emotion(text)
+    return jsonify(emotions)
+
+def main():
+    app.run(debug=True)
+
+if __name__ == '__main__':
+    main()
+
+python app.py
