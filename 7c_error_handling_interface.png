@@ -1,0 +1,32 @@
+import unittest
+from server import app  # or app.py depending on your filename
+
+class EmotionAPITestCase(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+
+    def test_missing_json(self):
+        response = self.app.post('/emotion', data="Just text, not JSON")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Invalid request format', response.get_data(as_text=True))
+
+    def test_empty_json(self):
+        response = self.app.post('/emotion', json={})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('No text provided', response.get_data(as_text=True))
+
+    def test_empty_text(self):
+        response = self.app.post('/emotion', json={"text": " "})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('No text provided', response.get_data(as_text=True))
+
+    def test_valid_input(self):
+        response = self.app.post('/emotion', json={"text": "I am so excited today!"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('joy', response.get_data(as_text=True))  # Assuming Watson returns 'joy'
+
+if __name__ == '__main__':
+    unittest.main()
+
+python -m unittest test_server.py
