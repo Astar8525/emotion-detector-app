@@ -1,0 +1,30 @@
+from flask import Flask, request, jsonify
+from emotion import detect_emotion
+
+app = Flask(__name__)
+
+@app.route('/emotion', methods=['POST'])
+def emotion():
+    try:
+        # Ensure JSON was sent and contains a 'text' field
+        if not request.is_json:
+            return jsonify({'error': 'Invalid request format, JSON expected'}), 400
+
+        data = request.get_json()
+        text = data.get('text', '').strip()
+
+        if not text:
+            return jsonify({'error': 'No text provided'}), 400
+
+        emotions = detect_emotion(text)
+        return jsonify(emotions), 200
+
+    except Exception as e:
+        # Log the exception (could be extended with logging module)
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
+
+def main():
+    app.run(debug=True)
+
+if __name__ == '__main__':
+    main()
