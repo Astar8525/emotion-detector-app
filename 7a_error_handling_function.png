@@ -1,0 +1,10 @@
+@app.route('/emotion', methods=['POST'])
+def emotion():
+    try:
+        text = request.json.get('text')
+        if not text:
+            return jsonify({'error': 'No text provided'}), 400
+        emotions = detect_emotion(text)
+        return jsonify(emotions)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
